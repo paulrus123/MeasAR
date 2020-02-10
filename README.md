@@ -22,4 +22,4 @@ To get started you’ll need to:
 
 * Open a terminal
 * Navigate to the directory in which you’d like to store your work and clone the project with the line below.
-* `git clone https://YOURUSERNAME@bitbucket.org/umichdig/xrdeveloperinterview.git`
+* `git clone https://YOURUSERNAME@bitbucket.org/jernel/PaulS-xrdeveloperinterview.git`
