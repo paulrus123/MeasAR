@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4937534169806378708}
   - component: {fileID: 4937534169806378709}
   - component: {fileID: 4937534169806378714}
+  - component: {fileID: 40919615}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: Untagged
@@ -126,6 +127,18 @@ MonoBehaviour:
   m_CustomMaterial: {fileID: 0}
   m_UseCustomRendererAsset: 0
   m_CustomRendererAsset: {fileID: 0}
+--- !u!114 &40919615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4937534169806378712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c9273835aca4f5a86e332889016669, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4937534170173198717
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ReferencePointPrefab: {fileID: 5212909601479496060, guid: 886cafcf43c0b465199ca9f8b8359c65,
+  m_ReferencePointPrefab: {fileID: 442447996050976028, guid: 743b3b2dc64b4435b97a2113e6ec1afb,
     type: 3}
 --- !u!1001 &8965633087742213241
 PrefabInstance:

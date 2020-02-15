@@ -38,7 +38,7 @@ namespace Tests
         }
 
         [UnityTest]
-        public IEnumerator CrossHairFollowsTrackable()
+        public IEnumerator CrossHairFollowsTrackableTest()
         {
             Pose pose = new Pose();
             pose.position = new Vector3(1, 2, 3);

@@ -1,47 +1,105 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.UI;
 
+/* 
+ * PointAndLinePlacementController is responsible for adding, modifying, and deleting all of 
+ * the MeasurablePoints in the scene. It sets the appropriate state for each point so that
+ * the measured line is shown to the correct destination
+ */
 public class PointAndLinePlacementController : MonoBehaviour
 {
     public ARReferencePointManager referencePointManager;
     public GameObject MeasureablePointPrefab;
-    public Button addPointButton;
-    public Button doneButton;
 
-    public enum LineState { NOT_STARTED, STARTED};
-    public LineState state;
     public List<MeasurablePoint> measureblePoints;
 
-    private void Start()
+    public void AddNewPoint()
     {
-        state = LineState.NOT_STARTED;
-        measureblePoints = new List<MeasurablePoint>();
-        addPointButton.onClick.AddListener(AddButtonClicked);
-        doneButton.onClick.AddListener(DoneButtonClicked);
-    }
-
-    private void OnDestroy()
-    {
-        addPointButton.onClick.RemoveListener(AddButtonClicked);
-        doneButton.onClick.RemoveListener(DoneButtonClicked);
-    }
-
-    private void AddButtonClicked()
-    {
-        ARReferencePoint result = PlaceAnchor();
-        if(result!=null)
+        ARReferencePoint result = CreateAnchor();
+        if (result != null)
         {
             var go = Instantiate(MeasureablePointPrefab);
             go.transform.position = result.transform.position;
             go.transform.parent = result.transform;
-            measureblePoints.Add(go.GetComponent<MeasurablePoint>());
-            go.GetComponent<MeasurablePoint>().state = MeasurablePoint.PointState.ACTIVE;
+            MeasurablePoint currentPoint = go.GetComponent<MeasurablePoint>();
+
+            measureblePoints.Add(currentPoint);
+            currentPoint.state = MeasurablePoint.PointState.ACTIVE;
+            if (measureblePoints.Count > 1)
+            {
+                MeasurablePoint lastPoint = measureblePoints[measureblePoints.Count - 2];
+                lastPoint.nextPoint = currentPoint;
+                if (lastPoint.state != MeasurablePoint.PointState.END)
+                {
+                    lastPoint.state = MeasurablePoint.PointState.BRIDGE;
+                }
+            }
         }
     }
 
-    private void DoneButtonClicked()
+    //TODO:refactor this function
+    public void RemovePoint(MeasurablePoint point)
+    {
+        //Check if point exists
+        int index = measureblePoints.FindIndex((MeasurablePoint obj) => Object.ReferenceEquals(obj, point));
+        if(index == -1)
+        {
+            Debug.Log("Tried to remove a non-tracked point");
+            Destroy(point.gameObject);
+            return;
+        }
+
+        int isFirstMiddleOrLast = -1; //1: first, 2: middle, 3: last
+        //Check if point was first
+        int previousIndex = index - 1;
+        int nextIndex = index + 1;
+        if (previousIndex < 0)
+            isFirstMiddleOrLast = 1;
+        else if (measureblePoints[previousIndex].state == MeasurablePoint.PointState.END)
+            isFirstMiddleOrLast = 1;
+        //check if point is end 
+        else if (nextIndex >= measureblePoints.Count)
+            isFirstMiddleOrLast = 3;
+        else if ((measureblePoints[index].state == MeasurablePoint.PointState.END) || (measureblePoints[index].state == MeasurablePoint.PointState.ACTIVE))
+            isFirstMiddleOrLast = 3;
+        else
+            isFirstMiddleOrLast = 2;
+
+        switch(isFirstMiddleOrLast)
+        {
+            case 1:
+            {
+                    //Delete point and anchor
+                    ARReferencePoint referencePoint = point.transform.parent.GetComponent<ARReferencePoint>();
+                    referencePointManager.RemoveReferencePoint(referencePoint);
+                    break;
+            }
+            case 2:
+            {
+                    //Delete point and anchor
+                    ARReferencePoint referencePoint = point.transform.parent.GetComponent<ARReferencePoint>();
+                    referencePointManager.RemoveReferencePoint(referencePoint);
+                    //Make previous point point towards next point
+                    measureblePoints[previousIndex].state = MeasurablePoint.PointState.BRIDGE;
+                    measureblePoints[previousIndex].nextPoint = measureblePoints[nextIndex];
+                    break;
+            }
+            case 3:
+            {
+                    //Delete point and anchor
+                    ARReferencePoint referencePoint = point.transform.parent.GetComponent<ARReferencePoint>();
+                    referencePointManager.RemoveReferencePoint(referencePoint);
+                    //make previous point an end point
+                    measureblePoints[previousIndex].state = MeasurablePoint.PointState.END;
+                    break;
+            }
+        }
+        measureblePoints.Remove(point);
+
+    }
+
+    public void FinishCurrentLine()
     {
         if (measureblePoints.Count > 0)
         {
@@ -49,31 +107,19 @@ public class PointAndLinePlacementController : MonoBehaviour
         }
     }
 
-    public ARReferencePoint PlaceAnchor()
+    private void Start()
+    {
+        measureblePoints = new List<MeasurablePoint>();
+    }
+
+    //TODO: Consider anchoring ReferencePoint to a detected plane instead of just anchoring to worldspace pose
+    private ARReferencePoint CreateAnchor()
     {
         if (!RayCastController.isRaycastingToTrackable)
             return null;
         else
         {
             return referencePointManager.AddReferencePoint(RayCastController.hitPose);
-        }
-    }
-
-    private void Update()
-    {
-        SetActivePointPathToCrosshairPosition();
-    }
-
-    private void SetActivePointPathToCrosshairPosition()
-    {
-        if (measureblePoints.Count > 0)
-        {
-            MeasurablePoint point = measureblePoints[measureblePoints.Count - 1];
-            if (point.state == MeasurablePoint.PointState.ACTIVE)
-            {
-                if (RayCastController.isRaycastingToTrackable)
-                    point.SetLineDestination(RayCastController.hitPose.position);
-            }
         }
     }
 }

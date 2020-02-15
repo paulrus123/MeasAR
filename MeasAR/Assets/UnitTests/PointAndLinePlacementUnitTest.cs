@@ -9,26 +9,15 @@ namespace Tests
     public class PointAndLinePlacementUnitTest
     {
         PointAndLinePlacementController pointAndLinePlacementController;
-        Button addPointButton;
-        Button doneButton;
         RayCastControllerMock rayCastControllerMock;
-
-
 
         [SetUp]
         public void Setup()
         {
             GameObject pointAndLineGo = Object.Instantiate(new GameObject());
-            GameObject addPointButtonGO = Object.Instantiate(new GameObject());
-            GameObject doneButtonGO = Object.Instantiate(new GameObject());
             GameObject raycasterGo = Object.Instantiate(new GameObject());
 
-            addPointButton = addPointButtonGO.AddComponent<Button>();
-            doneButton = doneButtonGO.AddComponent<Button>();
-
             pointAndLinePlacementController = pointAndLineGo.AddComponent<PointAndLinePlacementController>();
-            pointAndLinePlacementController.addPointButton = addPointButton;
-            pointAndLinePlacementController.doneButton = doneButton;
             rayCastControllerMock = raycasterGo.AddComponent<RayCastControllerMock>();
 
 
@@ -43,8 +32,6 @@ namespace Tests
             rayCastControllerMock.SetIsRaycasting(true);
             rayCastControllerMock.SetPose(new Pose());
 
-
-            addPointButton.onClick.Invoke();
             yield return null;
         }
     }
