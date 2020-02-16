@@ -107,6 +107,18 @@ public class PointAndLinePlacementController : MonoBehaviour
         }
     }
 
+    public bool CheckIfAnyPointIsActive()
+    {
+        bool result = false;
+        foreach(var point in measureblePoints)
+        {
+            if (point.state == MeasurablePoint.PointState.ACTIVE)
+                result = true;
+        }
+
+        return result;
+    }
+
     private void Start()
     {
         measureblePoints = new List<MeasurablePoint>();

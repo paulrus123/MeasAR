@@ -20,6 +20,12 @@ public class ButtonUIHandler : MonoBehaviour
         deletePointButton.onClick.AddListener(DeletePointButtonClicked);
     }
 
+    private void Update()
+    {
+        deletePointButton.gameObject.SetActive(crossHairController.isHoveringOverPoint);
+        finishLineButton.gameObject.SetActive(pointAndLinePlacementController.CheckIfAnyPointIsActive());
+    }
+
     private void OnDestroy()
     {
         addNewPointButton.onClick.RemoveListener(AddNewPointButtonClicked);
