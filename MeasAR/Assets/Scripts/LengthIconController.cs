@@ -9,7 +9,6 @@ public class LengthIconController : MonoBehaviour
 
     void Update()
     {
-        text.text = measurablePoint.GetDistance().ToString("F1");
         if (measurablePoint.state == MeasurablePoint.PointState.END)
             ImageGO.SetActive(false);
         else
@@ -18,5 +17,21 @@ public class LengthIconController : MonoBehaviour
             transform.position = measurablePoint.GetMidPoint();
             transform.LookAt(CameraHandler.position);
         }
+        if (UnitsToggleController.unit == UnitsToggleController.Units.IMPERIAL)
+            SetTextImperial();
+        else
+            SetTextMetric();
+    }
+
+    private void SetTextMetric()
+    {
+        float distanceInCentimeters = measurablePoint.GetDistance() * 100f;
+        text.text = distanceInCentimeters.ToString("F0") + " cm";
+    }
+
+    private void SetTextImperial()
+    {
+        float distanceInInches = measurablePoint.GetDistance() * 100f / 2.54f;
+        text.text = distanceInInches.ToString("F0") + "\"";
     }
 }

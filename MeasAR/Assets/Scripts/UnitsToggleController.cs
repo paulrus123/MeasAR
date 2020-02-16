@@ -11,13 +11,17 @@ public class UnitsToggleController : MonoBehaviour
     public Vector3 rightLocalPosition;
     public Transform selectorIcon;
 
-    private Button toggleButton;
+    public Button toggleButton;
 
-    void Start()
+    private void Awake()
     {
-        unit = Units.METRIC;
-        toggleButton = GetComponent<Button>();
+        unit = Units.IMPERIAL;
+    }
+
+    private void Start()
+    {
         toggleButton.onClick.AddListener(ToggleUnits);
+        selectorIcon.localPosition = leftLocalPosition;
     }
 
     private void OnDestroy()
@@ -25,17 +29,17 @@ public class UnitsToggleController : MonoBehaviour
         toggleButton.onClick.RemoveListener(ToggleUnits);
     }
 
-    void ToggleUnits()
+    public void ToggleUnits()
     {
         if(unit == Units.IMPERIAL)
         {
             unit = Units.METRIC;
-            selectorIcon.localPosition = leftLocalPosition;
+            selectorIcon.localPosition = rightLocalPosition;
         }
         else
         {
             unit = Units.IMPERIAL;
-            selectorIcon.localPosition = rightLocalPosition;
+            selectorIcon.localPosition = leftLocalPosition;
         }
     }
 }
