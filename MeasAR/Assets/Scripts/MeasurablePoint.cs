@@ -34,6 +34,9 @@ public class MeasurablePoint : MonoBehaviour
         }
     }
 
+    public enum PointPickupState { STATIONARY, PICKED_UP };
+    public PointPickupState pointPickupState;
+
     public void SetLineDestination(Vector3 destination)
     {
         lineRenderer.SetPosition(0, transform.position);

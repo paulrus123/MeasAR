@@ -119,6 +119,52 @@ public class PointAndLinePlacementController : MonoBehaviour
         return result;
     }
 
+    public void PickUpPoint(MeasurablePoint point)
+    {
+        //Check if point exists
+        int index = measureblePoints.FindIndex((MeasurablePoint obj) => Object.ReferenceEquals(obj, point));
+        if (index == -1)
+        {
+            Debug.Log("Tried to remove a non-tracked point");
+            return;
+        }
+
+        ARReferencePoint referencePoint = point.transform.parent.GetComponent<ARReferencePoint>();
+        if (referencePoint != null)
+        {
+            point.transform.parent = CameraHandler.Instance.transform;
+            referencePointManager.RemoveReferencePoint(referencePoint);
+        }
+    }
+
+    public void PlacePickedUpPoint()
+    {
+        ARReferencePoint result = CreateAnchor();
+        MeasurablePoint point = CameraHandler.Instance.GetComponentInChildren<MeasurablePoint>();
+
+        if ((result == null) || (point == null))
+        {
+            return;
+        }
+        else
+        {
+            point.transform.position = result.transform.position;
+            point.transform.parent = result.transform;
+        }
+    }
+
+    public void DeleteAllPoints()
+    {
+        while(measureblePoints.Count > 0)
+        {
+            MeasurablePoint point = measureblePoints[0];
+            measureblePoints.Remove(point);
+            ARReferencePoint referencePoint = point.transform.parent.GetComponent<ARReferencePoint>();
+            if (referencePoint != null)
+                referencePointManager.RemoveReferencePoint(referencePoint);
+        }
+    }
+
     private void Start()
     {
         measureblePoints = new List<MeasurablePoint>();

@@ -25,6 +25,12 @@ public class LengthIconController : MonoBehaviour
             SetTextImperial();
         else
             SetTextMetric();
+
+        if(measurablePoint.state == MeasurablePoint.PointState.ACTIVE)
+        {
+            CurrentLineLengthUIController.isActive = true;
+            CurrentLineLengthUIController.currentLengthText = text.text;
+        }
     }
 
     private void SetTextMetric()
@@ -35,7 +41,12 @@ public class LengthIconController : MonoBehaviour
 
     private void SetTextImperial()
     {
-        float distanceInInches = measurablePoint.GetDistance() * 100f / 2.54f;
-        text.text = distanceInInches.ToString("F0") + "\"";
+        float distanceInFeet = measurablePoint.GetDistance() * 3.28084f;
+
+        float roundedDistanceInFeet = Mathf.Floor(distanceInFeet);
+        float inches = Mathf.Floor((distanceInFeet - roundedDistanceInFeet) * 12);
+
+        //float distanceInInches = measurablePoint.GetDistance() * 100f / 2.54f;
+        text.text = roundedDistanceInFeet.ToString("F0") + "' " + inches.ToString("F0") + "\"";
     }
 }
