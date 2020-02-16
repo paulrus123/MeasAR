@@ -1,3 +1,8 @@
+Project Documentation: https://docs.google.com/document/d/1yEClOyE0Czes65YSSMco3ZWrZL6eeCEWxg7bg1_Gl3k/edit?usp=sharing
+
+
+
+
 Hello Finalist,
 
 I hope you’re doing well and we’re looking forward to talking with you next week.
