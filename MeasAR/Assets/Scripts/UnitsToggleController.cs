@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class UnitsToggleController : MonoBehaviour
 {
     public enum Units { METRIC, IMPERIAL};
-    public static Units unit { get; private set; }
+    public static Units unit { get; protected set; }
     public Vector3 leftLocalPosition;
     public Vector3 rightLocalPosition;
     public Transform selectorIcon;

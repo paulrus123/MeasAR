@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * LengthIconController is responsible for rendering the length of the measured line 
+ * using the correct units
+ */
 public class LengthIconController : MonoBehaviour
 {
     public MeasurablePoint measurablePoint;
