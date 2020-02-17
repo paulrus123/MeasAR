@@ -41,11 +41,6 @@ public class ButtonUIHandler : MonoBehaviour
         trashButton.onClick.RemoveListener(TrashButtonClicked);
     }
 
-    void TrashButtonClicked()
-    {
-        pointAndLinePlacementController.DeleteAllPoints();
-    }
-
 
     private void Update()
     {
@@ -135,9 +130,14 @@ public class ButtonUIHandler : MonoBehaviour
         }
     }
 
-    void PlacePointButtonClicked()
+    private void PlacePointButtonClicked()
     {
         pointAndLinePlacementController.PlacePickedUpPoint();
         state = State.DEFAULT;
+    }
+
+    private void TrashButtonClicked()
+    {
+        pointAndLinePlacementController.DeleteAllPoints();
     }
 }
