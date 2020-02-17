@@ -71,7 +71,7 @@ namespace Tests
 
             yield return null;
             Assert.IsTrue(controller.ImageGO.activeSelf == true);
-            Assert.AreEqual(controller.text.text, "39\"");
+            Assert.AreEqual(controller.text.text, "3' 3\"");
         }
 
         [UnityTest]
